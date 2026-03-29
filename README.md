@@ -17,8 +17,13 @@ Replace or edit `public/data/vbos-social-2026.csv` (same column layout as the VB
 
 ## Deploy to GitHub Pages
 
-1. Push this repo to `https://github.com/yjulio/business_plan.git` (default branch `main` or `master`).
-2. In the GitHub repo: **Settings → Pages → Build and deployment → Source:** select **GitHub Actions**.
-3. Push to `main` (or `master`). The workflow **Deploy to GitHub Pages** builds with `npm run build` and publishes the `dist` folder.
+1. Push this repo to `https://github.com/yjulio/business_plan.git` on branch `main` (or `master`).
+2. In the repo: **Settings → Pages → Build and deployment**
+3. Under **Source**, choose **Deploy from a branch** (not “GitHub Actions” for this workflow).
+4. Set **Branch** to **`gh-pages`**, folder **`/ (root)`**, then **Save**.  
+   The first time, run the workflow once (push a commit or **Actions → Deploy to GitHub Pages → Run workflow**). After it succeeds, the **`gh-pages`** branch appears—then set step 4 if it was greyed out before.
+5. Open **https://yjulio.github.io/business_plan/** (wait a minute after the workflow finishes).
 
-The app uses `base: '/business_plan/'` in `vite.config.ts` so asset URLs match a project site at `username.github.io/business_plan/`.
+If you still see **404**, double-check **Settings → Pages** shows the **`gh-pages`** branch and the latest **Actions** run is green.
+
+The app uses `base: '/business_plan/'` in `vite.config.ts` so assets load at `username.github.io/business_plan/`.
