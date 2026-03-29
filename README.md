@@ -17,19 +17,19 @@ Replace or edit `public/data/vbos-social-2026.csv` (same column layout as the VB
 
 ## Deploy to GitHub Pages
 
-The **root `index.html` in this repo is for Vite dev** (`/src/main.tsx`). It must **not** be what GitHub Pages serves, or you get a **blank white page** (the browser cannot load `/src/main.tsx` from Pages).
+The **`index.html` at the repo root** is only for Vite dev (`/src/main.tsx`). If GitHub Pages serves **`main` / (root)**, the site is **blank** because `/src/main.tsx` does not exist on Pages.
 
-The workflow **Deploy to GitHub Pages** builds with `npm run build` and pushes the **`dist/`** folder to the **`gh-pages`** branch only.
+**Production files live in the `docs/` folder** (built output: same as `dist/`). GitHub Pages must use **`/docs`**, not the repository root.
 
-### One-time setup
+### One-time setup (required)
 
-1. Push `main` to [`vbos-dashboards/business_plan`](https://github.com/vbos-dashboards/business_plan).
-2. Wait for **Actions → Deploy to GitHub Pages** to finish **green** (creates/updates **`gh-pages`**).
-3. **Repository → Settings → Pages → Build and deployment**
-4. **Source:** **Deploy from a branch**
-5. **Branch:** **`gh-pages`**, folder **`/ (root)`**, **Save**
-6. Open **https://vbos-dashboards.github.io/business_plan/**
+1. Push `main` to [`vbos-dashboards/business_plan`](https://github.com/vbos-dashboards/business_plan) (this repo includes a built **`docs/`** folder).
+2. **Settings → Pages → Build and deployment**
+3. **Source:** **Deploy from a branch**
+4. **Branch:** **`main`**, folder **`/docs`** — **Save**  
+   **Not** `/ (root)` — that causes a blank page.
+5. Open **https://vbos-dashboards.github.io/business_plan/**
 
-**Do not** set Pages to deploy **`main`** / **(root)** — that serves the wrong `index.html` and causes a blank site.
+After you change app code, **Actions → Deploy to GitHub Pages** rebuilds and updates **`docs/`** on `main` (pushes with `[skip ci]` so it does not loop).
 
-The app uses `base: '/business_plan/'` in `vite.config.ts`. See [GitHub Pages docs](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site).
+The app uses `base: '/business_plan/'` in `vite.config.ts`. See [Publishing from the docs folder](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site#publishing-from-a-branch).

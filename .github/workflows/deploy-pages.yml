@@ -1,11 +1,14 @@
-# Publishes ONLY the Vite `dist/` folder to branch `gh-pages`.
-# GitHub Pages must use that branch — do NOT deploy from `main` (root index.html is dev-only).
+# Builds the app and writes production files to /docs on main.
+# GitHub Pages: Settings → Build and deployment → Deploy from branch → main → /docs
+# (Do NOT use / (root) — that serves dev index.html and causes a blank page.)
 
 name: Deploy to GitHub Pages
 
 on:
   push:
     branches: [main, master]
+    paths-ignore:
+      - 'docs/**'
   workflow_dispatch:
 
 permissions:
@@ -26,9 +29,11 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
-      - name: Publish dist to gh-pages branch
-        uses: peaceiris/actions-gh-pages@v4
+      - name: Publish dist to main/docs
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
-          force_orphan: true
+          folder: dist
+          branch: main
+          target-folder: docs
+          clean: true
+          commit-message: 'chore: publish site to docs/ [skip ci]'
