@@ -1,0 +1,277 @@
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  color: var(--text);
+  background: var(--bg);
+}
+
+.header {
+  background: linear-gradient(135deg, #0f3d2e 0%, #1a5c45 50%, #0d3328 100%);
+  color: #f4fbf7;
+  padding: 2rem 1.25rem 1.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.header-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.eyebrow {
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.85;
+  margin: 0 0 0.5rem;
+}
+
+.header h1 {
+  font-size: clamp(1.35rem, 3vw, 1.75rem);
+  font-weight: 650;
+  line-height: 1.25;
+  margin: 0 0 0.5rem;
+}
+
+.sub {
+  margin: 0;
+  font-size: 0.9rem;
+  opacity: 0.9;
+  max-width: 52ch;
+}
+
+.sub code {
+  font-size: 0.82em;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+}
+
+.banner {
+  max-width: 1100px;
+  margin: 1rem auto 0;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+}
+
+.banner.error {
+  background: #fde8e8;
+  color: #8b1c1c;
+  border: 1px solid #f5c2c2;
+}
+
+.kpis {
+  max-width: 1100px;
+  margin: 1.25rem auto 0;
+  padding: 0 1.25rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.75rem;
+}
+
+.kpi {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.kpi-value {
+  font-size: 1.65rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+}
+
+.kpi.ok .kpi-value {
+  color: #1e6f4a;
+}
+
+.kpi.warn .kpi-value {
+  color: #b35c00;
+}
+
+.kpi.muted .kpi-value {
+  color: #5c6370;
+}
+
+.kpi-label {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.toolbar {
+  max-width: 1100px;
+  margin: 1rem auto 0;
+  padding: 0 1.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  align-items: flex-end;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.field.grow {
+  flex: 1;
+  min-width: 200px;
+}
+
+.field select,
+.field input {
+  font: inherit;
+  padding: 0.45rem 0.6rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+}
+
+.table-wrap {
+  max-width: 1100px;
+  margin: 1rem auto 2rem;
+  padding: 0 1.25rem;
+  flex: 1;
+}
+
+.grid {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(15, 61, 46, 0.06);
+}
+
+.grid thead {
+  background: #eef5f1;
+  text-align: left;
+}
+
+.grid th {
+  padding: 0.65rem 0.75rem;
+  font-weight: 600;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  border-bottom: 1px solid var(--border);
+}
+
+.grid td {
+  padding: 0.75rem;
+  vertical-align: top;
+  border-bottom: 1px solid var(--border);
+}
+
+.grid tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.grid tbody tr:hover td {
+  background: #f9fcfa;
+}
+
+.col-code {
+  width: 5rem;
+}
+.col-budget {
+  width: 6rem;
+}
+.col-due {
+  width: 7.5rem;
+}
+.col-st {
+  width: 8.5rem;
+}
+
+.mono {
+  font-family: ui-monospace, monospace;
+  font-size: 0.85em;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.output-title {
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+}
+
+.actions {
+  margin: 0.25rem 0 0;
+  padding-left: 1.1rem;
+  color: var(--text-secondary);
+}
+
+.actions li {
+  margin-bottom: 0.2rem;
+}
+
+.risk {
+  margin: 0.5rem 0 0;
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.pill {
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.pill-completed {
+  background: #d8f0e0;
+  color: #14532d;
+}
+
+.pill-in-progress {
+  background: #fff3d6;
+  color: #7a4a00;
+}
+
+.pill-other {
+  background: #eceff3;
+  color: #4a5568;
+}
+
+.raw-progress {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.empty {
+  text-align: center;
+  padding: 2rem;
+  color: var(--muted);
+}
+
+.footer {
+  margin-top: auto;
+  padding: 1rem 1.25rem 1.5rem;
+  font-size: 0.82rem;
+  color: var(--muted);
+  text-align: center;
+  border-top: 1px solid var(--border);
+}
+
+.footer a {
+  color: var(--accent);
+}
