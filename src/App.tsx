@@ -196,11 +196,11 @@ function App() {
         <p>
           Static site for GitHub Pages — repo{' '}
           <a
-            href="https://github.com/yjulio/business_plan"
+            href="https://github.com/vbos-dashboards/business_plan"
             target="_blank"
             rel="noreferrer"
           >
-            yjulio/business_plan
+            vbos-dashboards/business_plan
           </a>
         </p>
       </footer>
