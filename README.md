@@ -17,17 +17,19 @@ Replace or edit `public/data/vbos-social-2026.csv` (same column layout as the VB
 
 ## Deploy to GitHub Pages
 
-This repo uses the **official GitHub Actions → Pages** integration (`upload-pages-artifact` + `deploy-pages`). A **404** almost always means Pages is not set to use that integration, or the workflow has not completed.
+The **root `index.html` in this repo is for Vite dev** (`/src/main.tsx`). It must **not** be what GitHub Pages serves, or you get a **blank white page** (the browser cannot load `/src/main.tsx` from Pages).
 
-### One-time setup (required)
+The workflow **Deploy to GitHub Pages** builds with `npm run build` and pushes the **`dist/`** folder to the **`gh-pages`** branch only.
+
+### One-time setup
 
 1. Push `main` to [`vbos-dashboards/business_plan`](https://github.com/vbos-dashboards/business_plan).
-2. **Repository → Settings → Pages → Build and deployment**
-3. Under **Source**, select **GitHub Actions** (not “Deploy from a branch”, not “None”).
-4. **Organization:** ensure **Actions** is allowed: *Organization settings → Actions → General → Actions permissions* (allow actions to run). If workflows never appear under the **Actions** tab, this is the cause.
-5. Open **Actions**, confirm **Deploy to GitHub Pages** runs and finishes **green** after your push (or use **Run workflow**).
-6. Wait 1–2 minutes, then open **https://vbos-dashboards.github.io/business_plan/**
+2. Wait for **Actions → Deploy to GitHub Pages** to finish **green** (creates/updates **`gh-pages`**).
+3. **Repository → Settings → Pages → Build and deployment**
+4. **Source:** **Deploy from a branch**
+5. **Branch:** **`gh-pages`**, folder **`/ (root)`**, **Save**
+6. Open **https://vbos-dashboards.github.io/business_plan/**
 
-If the **deploy** job waits for approval, check **Settings → Environments → `github-pages`** and remove unnecessary protection rules blocking deployment.
+**Do not** set Pages to deploy **`main`** / **(root)** — that serves the wrong `index.html` and causes a blank site.
 
-The app uses `base: '/business_plan/'` in `vite.config.ts` so assets load under `vbos-dashboards.github.io/business_plan/`. See [Configuring a publishing source for GitHub Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site).
+The app uses `base: '/business_plan/'` in `vite.config.ts`. See [GitHub Pages docs](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site).
