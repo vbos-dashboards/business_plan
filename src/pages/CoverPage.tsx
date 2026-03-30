@@ -17,9 +17,8 @@ export default function CoverPage() {
           />
         </div>
         <div className="cover-caption">
-          <p className="org-name">Vanuatu Bureau of Statistics</p>
           <p className="org-name-fr">Bureau des Statistiques du Vanuatu</p>
-          <p className="cover-title">2026 Business Plan — Section monitoring</p>
+          <p className="cover-title">Section monitoring dashboard</p>
           <div className="cover-cta">
             <Link to="/sections" className="cover-cta-button">
               View departmental work plans
