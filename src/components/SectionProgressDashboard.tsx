@@ -46,7 +46,11 @@ export function SectionProgressDashboard({ items }: Props) {
     'Other / not set': r.other,
   }))
 
-  const barHeight = Math.min(520, Math.max(220, programRows.length * 40 + 80))
+  /* Taller chart: more px per program row + higher cap so bars read larger */
+  const barHeight = Math.min(
+    900,
+    Math.max(320, programRows.length * 56 + 120),
+  )
 
   if (stats.total === 0) {
     return (
@@ -116,15 +120,16 @@ export function SectionProgressDashboard({ items }: Props) {
               <BarChart
                 layout="vertical"
                 data={barData}
-                margin={{ top: 8, right: 16, left: 4, bottom: 8 }}
+                margin={{ top: 12, right: 24, left: 8, bottom: 12 }}
+                barCategoryGap="12%"
               >
                 <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                <XAxis type="number" allowDecimals={false} />
+                <XAxis type="number" allowDecimals={false} height={36} />
                 <YAxis
                   type="category"
                   dataKey="name"
-                  width={118}
-                  tick={{ fontSize: 11 }}
+                  width={152}
+                  tick={{ fontSize: 12 }}
                   interval={0}
                 />
                 <Tooltip
