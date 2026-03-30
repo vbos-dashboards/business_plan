@@ -11,6 +11,7 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
+import { BRAND_CHART } from '../theme/brand'
 import {
   progressByProgram,
   summarize,
@@ -18,11 +19,7 @@ import {
   type WorkItem,
 } from '../workplan'
 
-const CHART = {
-  completed: '#1e6f4a',
-  inProgress: '#c27f00',
-  other: '#6b7280',
-} as const
+const CHART = BRAND_CHART
 
 type Props = {
   /** Same filtered list as the work plan table */
@@ -123,7 +120,10 @@ export function SectionProgressDashboard({ items }: Props) {
                 margin={{ top: 12, right: 24, left: 8, bottom: 12 }}
                 barCategoryGap="12%"
               >
-                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                <CartesianGrid
+                  strokeDasharray="3 3"
+                  stroke="rgba(10, 22, 40, 0.12)"
+                />
                 <XAxis type="number" allowDecimals={false} height={36} />
                 <YAxis
                   type="category"

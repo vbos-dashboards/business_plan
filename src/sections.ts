@@ -30,13 +30,6 @@ export const VBOS_SECTIONS: VbosSection[] = [
     dataFile: 'VBOS-Section-BP_2026-1601-CS-Office.csv',
   },
   {
-    id: '1602',
-    name: 'DCM BP',
-    bpLabel: 'BP_2026 — Data Collection and Management (DCM)',
-    sheetName: '1602-DCM',
-    dataFile: 'VBOS-Section-BP_2026-1602-DCM.csv',
-  },
-  {
     id: '1603',
     name: 'Admin&Finance',
     bpLabel: 'BP_2026 — Admin&Finance',
@@ -63,6 +56,13 @@ export const VBOS_SECTIONS: VbosSection[] = [
     bpLabel: 'BP_2026 — Social',
     sheetName: '1607-Social',
     dataFile: 'VBOS-Section-BP_2026-1607-Social.csv',
+  },
+  {
+    id: '1602',
+    name: 'DCM BP',
+    bpLabel: 'BP_2026 — Data Collection and Management (DCM)',
+    sheetName: '1602-DCM',
+    dataFile: 'VBOS-Section-BP_2026-1602-DCM.csv',
   },
   {
     id: '1608',

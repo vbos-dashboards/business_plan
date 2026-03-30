@@ -5,7 +5,28 @@
   --bg: #f6f8f7;
   --surface: #fff;
   --border: #d9e0db;
-  --accent: #0f6b4d;
+
+  /* Logo / banner skin — Vanuatu Bureau of Statistics (navy + gold + green) */
+  --brand-navy: #0a1628;
+  --brand-navy-soft: #0d1f2d;
+  --brand-gold: #c9a227;
+  --brand-gold-light: #f0d78c;
+  --brand-green: #0f6b4d;
+  --brand-green-mid: #1a5c45;
+  --brand-green-deep: #0f3d2e;
+
+  --accent: var(--brand-green);
+
+  /* Dashboards & charts (align with logo) */
+  --chart-completed: var(--brand-green-mid);
+  --chart-in-progress: var(--brand-gold);
+  --chart-other: #5a6578;
+  --dashboard-tint: linear-gradient(
+    165deg,
+    rgba(10, 22, 40, 0.07) 0%,
+    rgba(245, 248, 247, 0.92) 45%,
+    #fff 100%
+  );
 
   font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
   font-size: 16px;
@@ -25,7 +46,23 @@
     --bg: #121418;
     --surface: #1a1d24;
     --border: #2e3440;
-    --accent: #5cd4a8;
+    --brand-navy: #c8d0dc;
+    --brand-navy-soft: #aeb8c9;
+    --brand-gold: #e8c84a;
+    --brand-gold-light: #f5e6a8;
+    --brand-green: #5cd4a8;
+    --brand-green-mid: #4abf8f;
+    --brand-green-deep: #2d8f62;
+    --accent: var(--brand-green);
+    --chart-completed: var(--brand-green-mid);
+    --chart-in-progress: var(--brand-gold);
+    --chart-other: #8a95a5;
+    --dashboard-tint: linear-gradient(
+      165deg,
+      rgba(232, 200, 74, 0.08) 0%,
+      rgba(26, 29, 36, 0.95) 50%,
+      var(--surface) 100%
+    );
   }
 
   .grid thead {
