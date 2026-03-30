@@ -28,8 +28,8 @@ export default function SectionsIndexPage() {
               key={s.id}
               to={`/section/${s.id}`}
               className={`section-card section-card--link${s.dataFile ? ' section-card--ready' : ''}`}
+              aria-label={`${s.name} (${s.id})`}
             >
-              <span className="section-card-id">{s.id}</span>
               <span className="section-card-name">{s.name}</span>
               <span className="section-card-bp">{s.bpLabel}</span>
               <span

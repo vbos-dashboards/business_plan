@@ -269,18 +269,11 @@ a.section-card--link {
   color: #1e6f4a;
 }
 
-.section-card-id {
-  font-size: 0.72rem;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-  color: var(--muted);
-  letter-spacing: 0.04em;
-}
-
 .section-card-name {
-  font-size: 0.82rem;
+  font-size: 0.88rem;
   font-weight: 600;
   line-height: 1.3;
+  padding-right: 1.25rem;
 }
 
 .section-card-bp {

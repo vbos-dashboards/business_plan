@@ -13,8 +13,9 @@ export function DepartmentNav() {
             className={({ isActive }) =>
               `dept-nav-link${isActive ? ' dept-nav-link--active' : ''}`
             }
+            aria-label={`${s.name} (${s.id})`}
           >
-            {s.id}-{s.name}
+            {s.name}
           </NavLink>
         ))}
       </nav>

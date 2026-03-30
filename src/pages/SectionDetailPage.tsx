@@ -104,7 +104,7 @@ export default function SectionDetailPage() {
         <span aria-hidden> / </span>
         <Link to="/sections">Sections</Link>
         <span aria-hidden> / </span>
-        <span className="breadcrumb-current">{section.id}</span>
+        <span className="breadcrumb-current">{section.name}</span>
       </p>
 
       <header className="header">
