@@ -1,6 +1,6 @@
 # VBoS section work plan monitor
 
-Static React (Vite) dashboard that loads a CSV from `public/data/` and shows outputs, actions, risks, and progress. Built for hosting on **GitHub Pages**.
+Static React (Vite) dashboard with **client-side routes** (React Router **`HashRouter`**, so URLs look like `.../business_plan/#/sections` and `.../business_plan/#/section/1607` — this avoids GitHub Pages 404s on refresh). The **cover** is the home route **`#/`**; **`#/sections`** lists all departments; each department has its own **`#/section/:id`** page. CSVs load from `public/data/` per `src/sections.ts`.
 
 **Live site (after you enable Pages and deploy):** [https://vbos-dashboards.github.io/business_plan/](https://vbos-dashboards.github.io/business_plan/)
 
@@ -13,7 +13,7 @@ npm run dev
 
 ## Update data
 
-Replace or edit `public/data/vbos-social-2026.csv` (same column layout as the VBoS business plan export).
+Replace or edit the linked file under `public/data/` (e.g. `VBOS-Section-BP_2026-1607-Social.csv` for section **1607**). Same column layout as the VBoS business plan export.
 
 ## Deploy to GitHub Pages
 
