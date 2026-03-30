@@ -1,25 +1,22 @@
-# Builds the app and writes production files to /docs on main.
-# GitHub Pages: Settings → Build and deployment → Deploy from branch → main → /docs
-# (Do NOT use / (root) — that serves dev index.html and causes a blank page.)
+# Verifies production build. Published site files live at repo root (index.html, assets/, data/)
+# and in docs/ — commit and push after `npm run build` so GitHub Pages serves the bundle.
 
-name: Deploy to GitHub Pages
+name: Build
 
 on:
   push:
     branches: [main, master]
     paths-ignore:
+      - 'assets/**'
+      - 'data/**'
       - 'docs/**'
+      - 'index.html'
+  pull_request:
+    branches: [main, master]
   workflow_dispatch:
 
-permissions:
-  contents: write
-
-concurrency:
-  group: pages
-  cancel-in-progress: true
-
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -29,11 +26,3 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
-      - name: Publish dist to main/docs
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          folder: dist
-          branch: main
-          target-folder: docs
-          clean: true
-          commit-message: 'chore: publish site to docs/ [skip ci]'
