@@ -2,20 +2,15 @@
   width: 100%;
   background: #0a1628;
   border-bottom: 2px solid #c9a227;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
-  padding: 0.35rem 0.75rem;
-  box-sizing: border-box;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
 .site-banner-img {
   display: block;
-  margin: 0 auto;
-  width: auto;
-  max-width: 100%;
+  width: 100%;
   height: auto;
-  /* Smaller strip; full image visible (no cropping) */
-  max-height: min(96px, 14vh);
-  object-fit: contain;
+  max-height: min(200px, 28vh);
+  object-fit: cover;
   object-position: center center;
 }
 
