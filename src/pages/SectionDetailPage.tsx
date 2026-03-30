@@ -1,9 +1,15 @@
-import { useEffect, useMemo, useState } from 'react'
+import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
 import { formatQuartersLabel, inferQuartersFromDueDate } from '../quarters'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { DepartmentNav } from '../components/DepartmentNav'
 import { PageNav } from '../components/PageNav'
 import { SiteFooter } from '../components/SiteFooter'
+
+const SectionProgressDashboard = lazy(() =>
+  import('../components/SectionProgressDashboard').then((m) => ({
+    default: m.SectionProgressDashboard,
+  })),
+)
 import { loadSectionRows, type LoadSource } from '../excelWorkplan'
 import {
   buildWorkItems,
@@ -178,6 +184,16 @@ export default function SectionDetailPage() {
               <span className="kpi-label">Other / not set</span>
             </div>
           </section>
+
+          <Suspense
+            fallback={
+              <div className="section-dashboard section-dashboard--loading">
+                Loading charts…
+              </div>
+            }
+          >
+            <SectionProgressDashboard items={filtered} />
+          </Suspense>
 
           <section className="toolbar">
             <label className="field">

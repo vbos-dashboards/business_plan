@@ -158,3 +158,89 @@ export function summarize(items: WorkItem[]) {
   }
   return { completed, inProgress, other, total: items.length }
 }
+
+export type ProgramProgressRow = {
+  /** Short label for charts (code + program) */
+  label: string
+  program: string
+  code: string
+  completed: number
+  inProgress: number
+  other: number
+  total: number
+}
+
+/** Group outputs by program for stacked progress bars (uses current code / program on each row). */
+export function progressByProgram(items: WorkItem[]): ProgramProgressRow[] {
+  const map = new Map<
+    string,
+    { program: string; code: string; completed: number; inProgress: number; other: number }
+  >()
+
+  for (const it of items) {
+    const program = it.program.trim() || '—'
+    const key = `${it.code}|${program}`
+    const k = normalizeProgress(it.progress)
+    let row = map.get(key)
+    if (!row) {
+      row = {
+        program,
+        code: it.code.trim(),
+        completed: 0,
+        inProgress: 0,
+        other: 0,
+      }
+      map.set(key, row)
+    }
+    if (k === 'completed') row.completed++
+    else if (k === 'in-progress') row.inProgress++
+    else row.other++
+  }
+
+  return [...map.values()]
+    .map((row) => {
+      const codePart = row.code ? `${row.code} ` : ''
+      const label =
+        `${codePart}${row.program}`.trim().length > 48
+          ? `${codePart}${row.program}`.trim().slice(0, 47) + '…'
+          : `${codePart}${row.program}`.trim()
+      return {
+        ...row,
+        label,
+        total: row.completed + row.inProgress + row.other,
+      }
+    })
+    .sort((a, b) => b.total - a.total)
+}
+
+/** Top N programs; merge remainder into one "Other programs" row for charts. */
+export function topProgramsForChart(
+  rows: ProgramProgressRow[],
+  limit = 8,
+): ProgramProgressRow[] {
+  if (rows.length <= limit) return rows
+  const top = rows.slice(0, limit)
+  const rest = rows.slice(limit)
+  let completed = 0
+  let inProgress = 0
+  let other = 0
+  for (const r of rest) {
+    completed += r.completed
+    inProgress += r.inProgress
+    other += r.other
+  }
+  const total = completed + inProgress + other
+  if (total === 0) return top
+  return [
+    ...top,
+    {
+      label: `Other programs (${rest.length})`,
+      program: 'Other',
+      code: '',
+      completed,
+      inProgress,
+      other,
+      total,
+    },
+  ]
+}
