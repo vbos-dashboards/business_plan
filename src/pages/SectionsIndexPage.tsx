@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { DepartmentNav } from '../components/DepartmentNav'
 import { PageNav } from '../components/PageNav'
 import { SiteFooter } from '../components/SiteFooter'
-import { VBOS_SECTIONS, type VbosSection } from '../sections'
+import { BP_2026_EXCEL_FILE, VBOS_SECTIONS, type VbosSection } from '../sections'
 
 export default function SectionsIndexPage() {
   return (
@@ -16,10 +16,10 @@ export default function SectionsIndexPage() {
         <div className="section-panel-head">
           <h1 className="section-panel-title">VBoS sections</h1>
           <p className="section-panel-sub">
-            {VBOS_SECTIONS.length} departments ·{' '}
-            <span className="has-data">●</span> work plan loaded ·{' '}
-            <span className="no-data">○</span> CSV to be added under{' '}
-            <code>public/data/</code>
+            {VBOS_SECTIONS.length} departments · one sheet each in{' '}
+            <code>{BP_2026_EXCEL_FILE}</code> ·{' '}
+            <span className="has-data">●</span> optional CSV fallback · add the
+            workbook to <code>public/data/</code>
           </p>
         </div>
         <div className="section-grid">

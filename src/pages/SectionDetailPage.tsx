@@ -3,14 +3,14 @@ import { Link, Navigate, useParams } from 'react-router-dom'
 import { DepartmentNav } from '../components/DepartmentNav'
 import { PageNav } from '../components/PageNav'
 import { SiteFooter } from '../components/SiteFooter'
+import { loadSectionRows, type LoadSource } from '../excelWorkplan'
 import {
   buildWorkItems,
   normalizeProgress,
-  parseCsv,
   summarize,
   type WorkItem,
 } from '../workplan'
-import { VBOS_SECTIONS } from '../sections'
+import { BP_2026_EXCEL_FILE, VBOS_SECTIONS } from '../sections'
 
 function progressLabel(kind: ReturnType<typeof normalizeProgress>): string {
   if (kind === 'completed') return 'Completed'
@@ -27,31 +27,41 @@ export default function SectionDetailPage() {
 
   const [items, setItems] = useState<WorkItem[]>([])
   const [loadError, setLoadError] = useState<string | null>(null)
+  const [loadDetail, setLoadDetail] = useState<string | null>(null)
+  const [dataSource, setDataSource] = useState<LoadSource | null>(null)
   const [filter, setFilter] = useState('')
   const [codeFilter, setCodeFilter] = useState<string>('all')
 
   useEffect(() => {
     if (!section) return
-    const file = section.dataFile
-    if (!file) {
-      setItems([])
-      setLoadError(null)
-      return
-    }
     let cancelled = false
-    const url = `${import.meta.env.BASE_URL}data/${file}`
+    setLoadError(null)
+    setLoadDetail(null)
+    setDataSource(null)
     ;(async () => {
       try {
-        const res = await fetch(url)
-        if (!res.ok) throw new Error(`Could not load work plan (${res.status})`)
-        const text = await res.text()
+        const { rows, source, detail } = await loadSectionRows(
+          section,
+          import.meta.env.BASE_URL,
+        )
         if (cancelled) return
-        const rows = parseCsv(text)
+        setDataSource(source)
+        setLoadDetail(detail ?? null)
         setItems(buildWorkItems(rows))
-        setLoadError(null)
+        if (source === 'none') {
+          setLoadError(
+            detail ??
+              `Add public/data/${BP_2026_EXCEL_FILE} with a worksheet named "${section.sheetName}" (same columns as the CSV export), or add a CSV under dataFile in sections.ts.`,
+          )
+        } else {
+          setLoadError(null)
+        }
       } catch (e) {
-        if (!cancelled)
+        if (!cancelled) {
+          setItems([])
+          setDataSource('none')
           setLoadError(e instanceof Error ? e.message : 'Failed to load data')
+        }
       }
     })()
     return () => {
@@ -88,6 +98,8 @@ export default function SectionDetailPage() {
 
   const stats = useMemo(() => summarize(filtered), [filtered])
 
+  const hasPlanData = dataSource === 'excel' || dataSource === 'csv'
+
   if (!sectionId || !section) {
     return <Navigate to="/sections" replace />
   }
@@ -113,37 +125,39 @@ export default function SectionDetailPage() {
           <h1>{section.name}</h1>
           <p className="sub">
             <strong>{section.bpLabel}</strong>
-            {section.dataFile ? (
+            {' — '}
+            Workbook <code>{BP_2026_EXCEL_FILE}</code>, sheet{' '}
+            <code>{section.sheetName}</code>
+            {section.dataFile && (
               <>
                 {' '}
-                — data: <code>{section.dataFile}</code>
+                · CSV fallback <code>{section.dataFile}</code>
               </>
-            ) : (
+            )}
+            {hasPlanData && dataSource && (
               <>
                 {' '}
-                — add a CSV export with the same columns as the Social work plan
-                to <code>public/data/</code> and link it in{' '}
-                <code>src/sections.ts</code>.
+                · Source:{' '}
+                <strong>{dataSource === 'excel' ? 'Excel' : 'CSV'}</strong>
               </>
             )}
           </p>
         </div>
       </header>
 
-      {!section.dataFile && (
+      {loadDetail && dataSource === 'csv' && (
         <div className="banner muted" role="status">
-          No spreadsheet is linked for this section yet. Upload a CSV and set{' '}
-          <code>dataFile</code> in <code>sections.ts</code>.
+          {loadDetail}
         </div>
       )}
 
-      {section.dataFile && loadError && (
+      {loadError && (
         <div className="banner error" role="alert">
           {loadError}
         </div>
       )}
 
-      {section.dataFile && (
+      {hasPlanData && (
         <>
           <section className="kpis" aria-label="Summary">
             <div className="kpi">
@@ -241,7 +255,11 @@ export default function SectionDetailPage() {
               </tbody>
             </table>
             {filtered.length === 0 && !loadError && (
-              <p className="empty">No rows match your filters.</p>
+              <p className="empty">
+                {items.length === 0
+                  ? 'No rows in this sheet (check headers match the export).'
+                  : 'No rows match your filters.'}
+              </p>
             )}
           </section>
         </>
