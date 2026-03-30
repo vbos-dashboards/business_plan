@@ -1,6 +1,4 @@
-/** Map a Due Date cell to calendar quarters Q1–Q4 for filtering and display. */
-
-export type QuarterFilter = 'all' | '1' | '2' | '3' | '4' | 'unassigned'
+/** Map a Due Date cell to calendar quarters Q1–Q4 for display in the work plan table. */
 
 function monthToQuarter(month: number): number {
   if (month <= 3) return 1

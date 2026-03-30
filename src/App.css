@@ -409,63 +409,6 @@ a.section-card--link {
   color: var(--muted);
 }
 
-.quarter-strip {
-  max-width: 1100px;
-  margin: 1rem auto 0;
-  padding: 0 1.25rem;
-}
-
-.quarter-strip-title {
-  margin: 0 0 0.5rem;
-  font-size: 0.82rem;
-  color: var(--muted);
-}
-
-.quarter-strip-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.quarter-chip {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.15rem;
-  padding: 0.5rem 0.75rem;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  color: var(--text);
-  font: inherit;
-  cursor: pointer;
-  text-align: left;
-  transition:
-    border-color 0.12s,
-    box-shadow 0.12s;
-}
-
-.quarter-chip:hover {
-  border-color: var(--accent);
-}
-
-.quarter-chip--active {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 2px rgba(30, 111, 74, 0.2);
-}
-
-.quarter-chip-label {
-  font-weight: 700;
-  font-size: 0.9rem;
-  color: var(--accent);
-}
-
-.quarter-chip-stat {
-  font-size: 0.75rem;
-  color: var(--muted);
-  font-variant-numeric: tabular-nums;
-}
-
 .toolbar {
   max-width: 1100px;
   margin: 1rem auto 0;
