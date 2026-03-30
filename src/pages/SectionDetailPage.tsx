@@ -1,4 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
+import {
+  formatQuartersLabel,
+  inferQuartersFromDueDate,
+  type QuarterFilter,
+} from '../quarters'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { DepartmentNav } from '../components/DepartmentNav'
 import { PageNav } from '../components/PageNav'
@@ -31,6 +36,11 @@ export default function SectionDetailPage() {
   const [dataSource, setDataSource] = useState<LoadSource | null>(null)
   const [filter, setFilter] = useState('')
   const [codeFilter, setCodeFilter] = useState<string>('all')
+  const [quarterFilter, setQuarterFilter] = useState<QuarterFilter>('all')
+
+  useEffect(() => {
+    setQuarterFilter('all')
+  }, [sectionId])
 
   useEffect(() => {
     if (!section) return
@@ -77,7 +87,7 @@ export default function SectionDetailPage() {
     return Array.from(set).sort()
   }, [items])
 
-  const filtered = useMemo(() => {
+  const baseFiltered = useMemo(() => {
     const q = filter.trim().toLowerCase()
     return items.filter((it) => {
       if (codeFilter !== 'all' && it.code !== codeFilter) return false
@@ -96,7 +106,37 @@ export default function SectionDetailPage() {
     })
   }, [items, filter, codeFilter])
 
+  const filtered = useMemo(() => {
+    if (quarterFilter === 'all') return baseFiltered
+    if (quarterFilter === 'unassigned') {
+      return baseFiltered.filter(
+        (it) => inferQuartersFromDueDate(it.dueDate).length === 0,
+      )
+    }
+    const qn = Number(quarterFilter) as 1 | 2 | 3 | 4
+    return baseFiltered.filter((it) =>
+      inferQuartersFromDueDate(it.dueDate).includes(qn),
+    )
+  }, [baseFiltered, quarterFilter])
+
   const stats = useMemo(() => summarize(filtered), [filtered])
+
+  const quarterStats = useMemo(() => {
+    return ([1, 2, 3, 4] as const).map((q) => {
+      const sub = baseFiltered.filter((it) =>
+        inferQuartersFromDueDate(it.dueDate).includes(q),
+      )
+      return summarize(sub)
+    })
+  }, [baseFiltered])
+
+  const unassignedCount = useMemo(
+    () =>
+      baseFiltered.filter(
+        (it) => inferQuartersFromDueDate(it.dueDate).length === 0,
+      ).length,
+    [baseFiltered],
+  )
 
   const hasPlanData = dataSource === 'excel' || dataSource === 'csv'
 
@@ -178,6 +218,47 @@ export default function SectionDetailPage() {
             </div>
           </section>
 
+          <section className="quarter-strip" aria-label="Quarters">
+            <p className="quarter-strip-title">
+              2026 quarters — click to filter (uses program &amp; search above)
+            </p>
+            <div className="quarter-strip-row">
+              {([1, 2, 3, 4] as const).map((q) => {
+                const st = quarterStats[q - 1]
+                const active = quarterFilter === String(q)
+                return (
+                  <button
+                    key={q}
+                    type="button"
+                    className={`quarter-chip${active ? ' quarter-chip--active' : ''}`}
+                    onClick={() =>
+                      setQuarterFilter(
+                        active ? 'all' : (String(q) as QuarterFilter),
+                      )
+                    }
+                  >
+                    <span className="quarter-chip-label">Q{q}</span>
+                    <span className="quarter-chip-stat">
+                      {st.completed} done · {st.total} outputs
+                    </span>
+                  </button>
+                )
+              })}
+              <button
+                type="button"
+                className={`quarter-chip${quarterFilter === 'unassigned' ? ' quarter-chip--active' : ''}`}
+                onClick={() =>
+                  setQuarterFilter(
+                    quarterFilter === 'unassigned' ? 'all' : 'unassigned',
+                  )
+                }
+              >
+                <span className="quarter-chip-label">Unassigned</span>
+                <span className="quarter-chip-stat">{unassignedCount} outputs</span>
+              </button>
+            </div>
+          </section>
+
           <section className="toolbar">
             <label className="field">
               <span>Program code</span>
@@ -191,6 +272,22 @@ export default function SectionDetailPage() {
                     {c}
                   </option>
                 ))}
+              </select>
+            </label>
+            <label className="field">
+              <span>Quarter</span>
+              <select
+                value={quarterFilter}
+                onChange={(e) =>
+                  setQuarterFilter(e.target.value as QuarterFilter)
+                }
+              >
+                <option value="all">All quarters</option>
+                <option value="1">Q1</option>
+                <option value="2">Q2</option>
+                <option value="3">Q3</option>
+                <option value="4">Q4</option>
+                <option value="unassigned">Unassigned due date</option>
               </select>
             </label>
             <label className="field grow">
@@ -214,12 +311,14 @@ export default function SectionDetailPage() {
                   <th className="col-budget">Budget</th>
                   <th className="col-out">Output / service target</th>
                   <th className="col-due">Due</th>
+                  <th className="col-quarter">Quarter</th>
                   <th className="col-st">Progress</th>
                 </tr>
               </thead>
               <tbody>
                 {filtered.map((it, idx) => {
                   const pk = normalizeProgress(it.progress)
+                  const qs = inferQuartersFromDueDate(it.dueDate)
                   return (
                     <tr key={`${it.outputTarget}-${idx}`}>
                       <td className="mono">{it.code}</td>
@@ -241,6 +340,9 @@ export default function SectionDetailPage() {
                         )}
                       </td>
                       <td className="nowrap">{it.dueDate || '—'}</td>
+                      <td className="col-quarter mono">
+                        {formatQuartersLabel(qs)}
+                      </td>
                       <td>
                         <span className={`pill pill-${pk}`}>
                           {progressLabel(pk)}
