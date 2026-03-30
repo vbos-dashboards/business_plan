@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build && node scripts/sync-published-site.mjs",
+    "export-csv": "node scripts/export-excel-sheets-to-csv.mjs",
     "lint": "eslint .",
     "preview": "vite preview"
   },

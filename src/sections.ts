@@ -1,8 +1,10 @@
 /**
  * Eleven VBoS departments (BP 2026). Code 1604 is not used in the official list.
  *
- * Primary data: `public/data/VBOS-Section-BP_2026.xlsx` — one worksheet per department (`sheetName`).
- * Optional CSV per section (`dataFile`) used if the workbook is missing or as fallback.
+ * Primary data: `public/data/VBOS-Section-BP_2026.xlsx` — worksheet tabs match `sheetName`
+ * (e.g. `1601-CS Office` in the workbook).
+ * CSV per section (`dataFile`) — exported from the same workbook; used if Excel is missing
+ * or as fallback. Regenerate: `npm run export-csv` (requires `public/data/VBOS-Section-BP_2026.xlsx`).
  */
 export const VBOS_SECTION_COUNT = 11 as const
 
@@ -13,10 +15,10 @@ export type VbosSection = {
   id: string
   name: string
   bpLabel: string
-  /** Worksheet tab name inside BP_2026_EXCEL_FILE */
+  /** Worksheet tab name inside VBOS-Section-BP_2026.xlsx */
   sheetName: string
-  /** Optional CSV in public/data/ (fallback or legacy) */
-  dataFile: string | null
+  /** CSV in public/data/ (fallback; same structure as Social sheet export) */
+  dataFile: string
 }
 
 export const VBOS_SECTIONS: VbosSection[] = [
@@ -24,78 +26,78 @@ export const VBOS_SECTIONS: VbosSection[] = [
     id: '1601',
     name: 'CS Office',
     bpLabel: 'BP_2026 — CS Office',
-    sheetName: 'CS Office',
-    dataFile: null,
+    sheetName: '1601-CS Office',
+    dataFile: 'VBOS-Section-BP_2026-1601-CS-Office.csv',
   },
   {
     id: '1602',
-    name: 'DCM',
-    bpLabel: 'BP_2026 — DCM',
-    sheetName: 'DCM',
-    dataFile: null,
+    name: 'DCM BP',
+    bpLabel: 'BP_2026 — Data Collection and Management (DCM)',
+    sheetName: '1602-DCM',
+    dataFile: 'VBOS-Section-BP_2026-1602-DCM.csv',
   },
   {
     id: '1603',
     name: 'Admin&Finance',
     bpLabel: 'BP_2026 — Admin&Finance',
-    sheetName: 'Admin&Finance',
-    dataFile: null,
+    sheetName: '1603-Admin&Finance',
+    dataFile: 'VBOS-Section-BP_2026-1603-Admin-Finance.csv',
   },
   {
     id: '1605',
     name: 'SLC',
     bpLabel: 'BP_2026 — SLC',
-    sheetName: 'SLC',
-    dataFile: null,
+    sheetName: '1605-SLC',
+    dataFile: 'VBOS-Section-BP_2026-1605-SLC.csv',
   },
   {
     id: '1606',
     name: 'Economics',
     bpLabel: 'BP_2026 — Economics',
-    sheetName: 'Economics',
-    dataFile: null,
+    sheetName: '1606-Economics',
+    dataFile: 'VBOS-Section-BP_2026-1606-Economics.csv',
   },
   {
     id: '1607',
     name: 'Social',
     bpLabel: 'BP_2026 — Social',
-    sheetName: 'Social',
+    sheetName: '1607-Social',
     dataFile: 'VBOS-Section-BP_2026-1607-Social.csv',
   },
   {
     id: '1608',
     name: 'Torba',
     bpLabel: 'BP_2026 — Torba',
-    sheetName: 'Torba',
-    dataFile: null,
+    sheetName: '1608-Torba',
+    dataFile: 'VBOS-Section-BP_2026-1608-Torba.csv',
   },
   {
     id: '1609',
     name: 'Sanma',
     bpLabel: 'BP_2026 — Sanma',
-    sheetName: 'Sanma',
-    dataFile: null,
+    sheetName: '1609-Sanma',
+    dataFile: 'VBOS-Section-BP_2026-1609-Sanma.csv',
   },
   {
     id: '1610',
     name: 'Malampa',
     bpLabel: 'BP_2026 — Malampa',
-    sheetName: 'Malampa',
-    dataFile: null,
+    sheetName: '1610-Malampa',
+    dataFile: 'VBOS-Section-BP_2026-1610-Malampa.csv',
   },
   {
     id: '1611',
     name: 'Penama',
     bpLabel: 'BP_2026 — Penama',
-    sheetName: 'Penama',
-    dataFile: null,
+    sheetName: '1611-Penama',
+    dataFile: 'VBOS-Section-BP_2026-1611-Penama.csv',
   },
   {
     id: '1612',
     name: 'Tafea',
     bpLabel: 'BP_2026 — Tafea',
-    sheetName: 'Tafea',
-    dataFile: null,
+    sheetName: '1612-Tafea',
+    dataFile: 'VBOS-Section-BP_2026-1612-Tafea.csv',
   },
 ]
 

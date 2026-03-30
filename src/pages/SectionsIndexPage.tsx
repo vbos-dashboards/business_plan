@@ -17,9 +17,10 @@ export default function SectionsIndexPage() {
           <h1 className="section-panel-title">VBoS sections</h1>
           <p className="section-panel-sub">
             {VBOS_SECTIONS.length} departments · one sheet each in{' '}
-            <code>{BP_2026_EXCEL_FILE}</code> ·{' '}
-            <span className="has-data">●</span> optional CSV fallback · add the
-            workbook to <code>public/data/</code>
+            <code>{BP_2026_EXCEL_FILE}</code> · matching CSV in{' '}
+            <code>public/data/</code> ·{' '}
+            <span className="has-data">●</span> run <code>npm run export-csv</code>{' '}
+            after updating the workbook
           </p>
         </div>
         <div className="section-grid">
