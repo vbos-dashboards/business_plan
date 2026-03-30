@@ -73,6 +73,48 @@
   color: var(--muted);
 }
 
+.dept-nav-wrap {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.dept-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.75rem;
+  padding: 0.35rem 0;
+  min-width: min-content;
+}
+
+.dept-nav-link {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #1565c0;
+  text-decoration: none;
+  white-space: nowrap;
+  padding: 0.2rem 0;
+  border-bottom: 2px solid transparent;
+  transition:
+    color 0.12s,
+    border-color 0.12s;
+}
+
+.dept-nav-link:hover {
+  color: #0d47a1;
+  text-decoration: underline;
+}
+
+.dept-nav-link--active {
+  color: #0d3328;
+  border-bottom-color: #0f6b4d;
+  font-weight: 700;
+}
+
 .breadcrumb {
   max-width: 1100px;
   margin: 0 auto;

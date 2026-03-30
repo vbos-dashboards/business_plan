@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
+import { DepartmentNav } from '../components/DepartmentNav'
 import { PageNav } from '../components/PageNav'
 import { SiteFooter } from '../components/SiteFooter'
 import {
@@ -96,6 +97,7 @@ export default function SectionDetailPage() {
       <div className="page-header-bar">
         <PageNav />
       </div>
+      <DepartmentNav />
 
       <p className="breadcrumb">
         <Link to="/">Cover</Link>

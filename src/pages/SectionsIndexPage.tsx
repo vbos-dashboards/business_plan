@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { DepartmentNav } from '../components/DepartmentNav'
 import { PageNav } from '../components/PageNav'
 import { SiteFooter } from '../components/SiteFooter'
 import { VBOS_SECTIONS, type VbosSection } from '../sections'
@@ -9,6 +10,7 @@ export default function SectionsIndexPage() {
       <div className="page-header-bar">
         <PageNav />
       </div>
+      <DepartmentNav />
 
       <section className="section-panel section-panel--spaced" aria-label="VBoS sections">
         <div className="section-panel-head">

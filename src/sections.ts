@@ -1,10 +1,11 @@
 /**
- * Eleven VBoS section slots for BP 2026. Link `dataFile` to a CSV under public/data/
- * (same columns as the Social work plan export). Only sections with a file load rows.
+ * Eleven VBoS departments (BP 2026). Code 1604 is not used in the official list.
+ * Link `dataFile` to a CSV under public/data/ (same columns as the Social export).
  */
 export const VBOS_SECTION_COUNT = 11 as const
 export type VbosSection = {
   id: string
+  /** Short name as in org charts, e.g. CS Office, Social */
   name: string
   /** Matches naming like BP_2026(1607-Social) */
   bpLabel: string
@@ -15,68 +16,68 @@ export type VbosSection = {
 export const VBOS_SECTIONS: VbosSection[] = [
   {
     id: '1601',
-    name: 'Corporate Services & Administration',
-    bpLabel: 'BP_2026(1601-Corporate)',
+    name: 'CS Office',
+    bpLabel: 'BP_2026(1601-CS Office)',
     dataFile: null,
   },
   {
     id: '1602',
-    name: 'National Accounts & Economic Statistics',
-    bpLabel: 'BP_2026(1602-Economic)',
+    name: 'DCM',
+    bpLabel: 'BP_2026(1602-DCM)',
     dataFile: null,
   },
   {
     id: '1603',
-    name: 'Population & Demographic Statistics',
-    bpLabel: 'BP_2026(1603-Population)',
-    dataFile: null,
-  },
-  {
-    id: '1604',
-    name: 'Environment & Agriculture Statistics',
-    bpLabel: 'BP_2026(1604-Environment)',
+    name: 'Admin&Finance',
+    bpLabel: 'BP_2026(1603-Admin&Finance)',
     dataFile: null,
   },
   {
     id: '1605',
-    name: 'ICT, Data Science & GIS',
-    bpLabel: 'BP_2026(1605-ICT)',
+    name: 'SLC',
+    bpLabel: 'BP_2026(1605-SLC)',
     dataFile: null,
   },
   {
     id: '1606',
-    name: 'Methodology & Statistical Standards',
-    bpLabel: 'BP_2026(1606-Methodology)',
+    name: 'Economics',
+    bpLabel: 'BP_2026(1606-Economics)',
     dataFile: null,
   },
   {
     id: '1607',
-    name: 'Social & Environment Technical',
+    name: 'Social',
     bpLabel: 'BP_2026(1607-Social)',
     dataFile: 'VBOS-Section-BP_2026-1607-Social.csv',
   },
   {
     id: '1608',
-    name: 'Provincial Statistics & Training',
-    bpLabel: 'BP_2026(1608-Provincial)',
+    name: 'Torba',
+    bpLabel: 'BP_2026(1608-Torba)',
     dataFile: null,
   },
   {
     id: '1609',
-    name: 'Survey Operations (HIES & Censuses)',
-    bpLabel: 'BP_2026(1609-Surveys)',
+    name: 'Sanma',
+    bpLabel: 'BP_2026(1609-Sanma)',
     dataFile: null,
   },
   {
     id: '1610',
-    name: 'Dissemination & Client Services',
-    bpLabel: 'BP_2026(1610-Dissemination)',
+    name: 'Malampa',
+    bpLabel: 'BP_2026(1610-Malampa)',
     dataFile: null,
   },
   {
     id: '1611',
-    name: 'International Classifications & Coordination',
-    bpLabel: 'BP_2026(1611-International)',
+    name: 'Penama',
+    bpLabel: 'BP_2026(1611-Penama)',
+    dataFile: null,
+  },
+  {
+    id: '1612',
+    name: 'Tafea',
+    bpLabel: 'BP_2026(1612-Tafea)',
     dataFile: null,
   },
 ]
