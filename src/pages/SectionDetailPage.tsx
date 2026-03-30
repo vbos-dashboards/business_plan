@@ -1,29 +1,18 @@
-import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
-import { formatQuartersLabel, inferQuartersFromDueDate } from '../quarters'
-import { Link, Navigate, useParams } from 'react-router-dom'
+import { useEffect, useMemo, useState } from 'react'
+import {
+  Link,
+  NavLink,
+  Outlet,
+  Navigate,
+  useParams,
+} from 'react-router-dom'
 import { DepartmentNav } from '../components/DepartmentNav'
 import { PageNav } from '../components/PageNav'
 import { SiteFooter } from '../components/SiteFooter'
-
-const SectionProgressDashboard = lazy(() =>
-  import('../components/SectionProgressDashboard').then((m) => ({
-    default: m.SectionProgressDashboard,
-  })),
-)
 import { loadSectionRows, type LoadSource } from '../excelWorkplan'
-import {
-  buildWorkItems,
-  normalizeProgress,
-  summarize,
-  type WorkItem,
-} from '../workplan'
+import { buildWorkItems, summarize, type WorkItem } from '../workplan'
 import { BP_2026_EXCEL_FILE, VBOS_SECTIONS } from '../sections'
-
-function progressLabel(kind: ReturnType<typeof normalizeProgress>): string {
-  if (kind === 'completed') return 'Completed'
-  if (kind === 'in-progress') return 'In progress'
-  return 'Other / not set'
-}
+import type { SectionOutletContext } from './sectionOutletContext'
 
 export default function SectionDetailPage() {
   const { sectionId } = useParams<{ sectionId: string }>()
@@ -107,6 +96,17 @@ export default function SectionDetailPage() {
 
   const hasPlanData = dataSource === 'excel' || dataSource === 'csv'
 
+  const outletContext = useMemo<SectionOutletContext | null>(() => {
+    if (!section) return null
+    return {
+      section,
+      items,
+      filtered,
+      stats,
+      loadError,
+    }
+  }, [section, items, filtered, stats, loadError])
+
   if (!sectionId || !section) {
     return <Navigate to="/sections" replace />
   }
@@ -164,36 +164,27 @@ export default function SectionDetailPage() {
         </div>
       )}
 
-      {hasPlanData && (
+      {hasPlanData && outletContext && (
         <>
-          <section className="kpis" aria-label="Summary">
-            <div className="kpi">
-              <span className="kpi-value">{stats.total}</span>
-              <span className="kpi-label">Outputs tracked</span>
-            </div>
-            <div className="kpi ok">
-              <span className="kpi-value">{stats.completed}</span>
-              <span className="kpi-label">Completed</span>
-            </div>
-            <div className="kpi warn">
-              <span className="kpi-value">{stats.inProgress}</span>
-              <span className="kpi-label">In progress</span>
-            </div>
-            <div className="kpi muted">
-              <span className="kpi-value">{stats.other}</span>
-              <span className="kpi-label">Other / not set</span>
-            </div>
-          </section>
-
-          <Suspense
-            fallback={
-              <div className="section-dashboard section-dashboard--loading">
-                Loading charts…
-              </div>
-            }
-          >
-            <SectionProgressDashboard items={filtered} />
-          </Suspense>
+          <nav className="section-tabs" aria-label="Section views">
+            <NavLink
+              to={`/section/${sectionId}`}
+              end
+              className={({ isActive }) =>
+                `section-tab${isActive ? ' section-tab--active' : ''}`
+              }
+            >
+              Work plan
+            </NavLink>
+            <NavLink
+              to={`/section/${sectionId}/dashboard`}
+              className={({ isActive }) =>
+                `section-tab${isActive ? ' section-tab--active' : ''}`
+              }
+            >
+              Progress dashboard
+            </NavLink>
+          </nav>
 
           <section className="toolbar">
             <label className="field">
@@ -222,68 +213,7 @@ export default function SectionDetailPage() {
             </label>
           </section>
 
-          <section className="table-wrap" aria-label="Work plan outputs">
-            <table className="grid">
-              <thead>
-                <tr>
-                  <th className="col-code">Code</th>
-                  <th className="col-prog">Program</th>
-                  <th className="col-budget">Budget</th>
-                  <th className="col-out">Output / service target</th>
-                  <th className="col-due">Due</th>
-                  <th className="col-quarter">Quarter</th>
-                  <th className="col-st">Progress</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filtered.map((it, idx) => {
-                  const pk = normalizeProgress(it.progress)
-                  const qs = inferQuartersFromDueDate(it.dueDate)
-                  return (
-                    <tr key={`${it.outputTarget}-${idx}`}>
-                      <td className="mono">{it.code}</td>
-                      <td>{it.program}</td>
-                      <td className="nowrap">{it.budget}</td>
-                      <td>
-                        <div className="output-title">{it.outputTarget}</div>
-                        {it.actions.length > 0 && (
-                          <ul className="actions">
-                            {it.actions.map((line, i) => (
-                              <li key={i}>{line}</li>
-                            ))}
-                          </ul>
-                        )}
-                        {it.comments && (
-                          <p className="risk">
-                            <strong>Risks / comments:</strong> {it.comments}
-                          </p>
-                        )}
-                      </td>
-                      <td className="nowrap">{it.dueDate || '—'}</td>
-                      <td className="col-quarter mono">
-                        {formatQuartersLabel(qs, it.dueDate)}
-                      </td>
-                      <td>
-                        <span className={`pill pill-${pk}`}>
-                          {progressLabel(pk)}
-                        </span>
-                        {it.progress && pk === 'other' && (
-                          <span className="raw-progress">{it.progress}</span>
-                        )}
-                      </td>
-                    </tr>
-                  )
-                })}
-              </tbody>
-            </table>
-            {filtered.length === 0 && !loadError && (
-              <p className="empty">
-                {items.length === 0
-                  ? 'No rows in this sheet (check headers match the export).'
-                  : 'No rows match your filters.'}
-              </p>
-            )}
-          </section>
+          <Outlet context={outletContext} />
         </>
       )}
 
