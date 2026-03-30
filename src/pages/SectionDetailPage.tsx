@@ -341,7 +341,7 @@ export default function SectionDetailPage() {
                       </td>
                       <td className="nowrap">{it.dueDate || '—'}</td>
                       <td className="col-quarter mono">
-                        {formatQuartersLabel(qs)}
+                        {formatQuartersLabel(qs, it.dueDate)}
                       </td>
                       <td>
                         <span className={`pill pill-${pk}`}>

@@ -2,21 +2,6 @@
 
 export type QuarterFilter = 'all' | '1' | '2' | '3' | '4' | 'unassigned'
 
-const MONTHS = [
-  'jan',
-  'feb',
-  'mar',
-  'apr',
-  'may',
-  'jun',
-  'jul',
-  'aug',
-  'sep',
-  'oct',
-  'nov',
-  'dec',
-] as const
-
 function monthToQuarter(month: number): number {
   if (month <= 3) return 1
   if (month <= 6) return 2
@@ -24,10 +9,28 @@ function monthToQuarter(month: number): number {
   return 4
 }
 
+/**
+ * Word-boundary month names (CS Office sheet uses Dec, Sept, June, Feb, July, March, etc.).
+ * Avoids substring false positives (e.g. "dec" inside "decision").
+ */
+const MONTH_PATTERNS: ReadonlyArray<{ re: RegExp; month: number }> = [
+  { re: /\b(?:january|jan\.?)\b/i, month: 1 },
+  { re: /\b(?:february|feb\.?)\b/i, month: 2 },
+  { re: /\b(?:march|mar\.?)\b/i, month: 3 },
+  { re: /\b(?:april|apr\.?)\b/i, month: 4 },
+  { re: /\bmay\b/i, month: 5 },
+  { re: /\b(?:june|jun\.?)\b/i, month: 6 },
+  { re: /\b(?:july|jul\.?)\b/i, month: 7 },
+  { re: /\b(?:august|aug\.?)\b/i, month: 8 },
+  { re: /\b(?:september|sept\.?|sep\.?)\b/i, month: 9 },
+  { re: /\b(?:october|oct\.?)\b/i, month: 10 },
+  { re: /\b(?:november|nov\.?)\b/i, month: 11 },
+  { re: /\b(?:december|dec\.?)\b/i, month: 12 },
+]
+
 function extractMonthFromText(s: string): number | null {
-  const lower = s.toLowerCase()
-  for (let i = 0; i < 12; i++) {
-    if (lower.includes(MONTHS[i])) return i + 1
+  for (const { re, month } of MONTH_PATTERNS) {
+    if (re.test(s)) return month
   }
   const num = s.match(/(\d{1,2})[-/](\d{1,2})[-/](\d{2,4})/)
   if (num) {
@@ -48,6 +51,9 @@ export function inferQuartersFromDueDate(due: string): number[] {
   if (!s) return []
 
   const lower = s.toLowerCase()
+
+  /** Year-round / continuous work — include in every quarter for filtering */
+  if (/\bongoing\b/.test(lower)) return [1, 2, 3, 4]
 
   if (/\bquarterly\b/.test(lower)) return [1, 2, 3, 4]
 
@@ -86,7 +92,9 @@ export function inferQuartersFromDueDate(due: string): number[] {
   return []
 }
 
-export function formatQuartersLabel(quarters: number[]): string {
+export function formatQuartersLabel(quarters: number[], rawDue?: string): string {
+  const raw = rawDue?.trim() ?? ''
+  if (raw && /\bongoing\b/i.test(raw)) return 'Ongoing'
   if (quarters.length === 0) return 'Unassigned'
   const u = [...new Set(quarters)].sort((a, b) => a - b)
   if (u.length === 4) return 'Q1–Q4'
